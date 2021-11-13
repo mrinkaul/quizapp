@@ -54,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void readQuestionFile() {
+		// This is the main method that needs to read the questions, 
+		// form the array and then trigger the setupQuestions() method that will
+		// go to the currentQuestion
+		// Do everything in a try/catch so that you can log the errors
+		
+		
         // Read resources text file with list of questions
         // Create an array of questions
         // Line by Line reading, and for each line, call
