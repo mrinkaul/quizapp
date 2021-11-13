@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = GLOBAL_TAG + "MainActivity";
@@ -21,6 +23,9 @@ public class MainActivity extends AppCompatActivity {
     Button buttonD;
     TextView commentTextView;
     Button buttonSkip;
+    List<Question> fullQuesionList;
+    Question[] fullQuestionArray;
+    int currentQuestionIndex = 0;
     Question currentQuestion;
 
     @Override
@@ -30,8 +35,10 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "Started......");
         acquireHandles();
         commentTextView.setText("");
-        currentQuestion = new Question("When was NASA founded ?~1995~1974~1947~1999~C");
-        setupQuestion();
+        readQuestionFile();
+        //currentQuestion = new Question("When was NASA founded ?~1995~1974~1947~1999~C");
+        //setupQuestion();
+        goToNextQuestion(0);
     }
 
     private void acquireHandles() {
@@ -46,6 +53,20 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "Setup Handles");
     }
 
+    private void readQuestionFile() {
+        // Read resources text file with list of questions
+        // Create an array of questions
+        // Line by Line reading, and for each line, call
+        // Question q = new Question(..... the line);
+        // fullQuestionList.add(q);
+
+        // Once the fullQuestionList is ready, convert from List<Question> to Question[]
+        // Google how to convert from List to Array
+
+
+        // Finally,  fullQuestionsArray should be proper
+    }
+
     private void setupQuestion() {
         questionTextView.setText(currentQuestion.getQuestion());
         buttonA.setText(currentQuestion.getAnswerA());
@@ -54,10 +75,21 @@ public class MainActivity extends AppCompatActivity {
         buttonD.setText(currentQuestion.getAnswerD());
     }
 
+    private void goToNextQuestion(int index) {
+        if(index >= fullQuestionArray.length) {
+            commentTextView.setText("All Questions answered or skipped");
+            Log.d(TAG, "Done with all questions");
+            goToNextQuestion(0);
+        }
+        currentQuestion = fullQuestionArray[index];
+        currentQuestionIndex = index;
+    }
+
     private void setComment(Boolean a) {
         if(a) {
             commentTextView.setText("Correct!");
             Log.d(TAG, "Correct");
+            goToNextQuestion(currentQuestionIndex++);
         } else {
             commentTextView.setText("Incorrect, Try Again !");
         }
@@ -97,6 +129,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickButtonSkip(View view) {
         Log.d(TAG, "Button Skip");
-
+        goToNextQuestion(currentQuestionIndex++);
     }
 }
